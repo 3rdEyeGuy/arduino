@@ -1,5 +1,5 @@
 #include <Servo.h>
-servo myServo
+Servo myServo;
 int left= 180;
 int right = 15;
 int Mid = 90;
@@ -75,7 +75,7 @@ int Distance()
     digitalWrite(trig, HIGH);
     delayMicroseconds(10);
     digitalWrite(trig, LOW);
-    float cmDist = pulsin(echo, HIGH);
+    float cmDist = pulseIn(echo, HIGH);
     cmDist = cmDist/58;
     return (int)cmDist;
 }
@@ -116,10 +116,13 @@ void loop()
         rDist = Distance ();
         if(rDist > lDist)
         mRight();
+        delay(500);
         else if(lDist > rDist)
         mLeft();
+        delay(500);
         else if(rDist <= 20 || lDist <= 20)
         backward();
+        delay(500);
     }
     else forward();
 }
