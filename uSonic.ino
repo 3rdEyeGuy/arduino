@@ -1,4 +1,4 @@
-#include <servo.h>
+#include <Servo.h>
 servo myServo
 int left= 180;
 int right = 15;
@@ -42,7 +42,7 @@ void forward()
     digitalWrite(bL, LOW);
 }
 
-void left()
+void mLeft()
 {
     digitalWrite(spdL, SPD);
     digitalWrite(spdR, SPD);
@@ -52,7 +52,7 @@ void left()
     digitalWrite(bR, HIGH);
 }
 
-void right()
+void mRight()
 {
     digitalWrite(spdR, SPD);
     digitalWrite(spdL, SPD);
@@ -115,9 +115,9 @@ void loop()
         delay(500);
         rDist = Distance ();
         if(rDist > lDist)
-        right();
+        mRight();
         else if(lDist > rDist)
-        left();
+        mLeft();
         else if(rDist <= 20 || lDist <= 20)
         backward();
     }
