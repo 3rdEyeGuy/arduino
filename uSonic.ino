@@ -115,14 +115,20 @@ void loop()
         delay(500);
         rDist = Distance ();
         if(rDist > lDist)
-        mRight();
-        delay(500);
+        {
+            mRight();
+            delay(500);
+        }
         else if(lDist > rDist)
-        mLeft();
-        delay(500);
+        {
+            mLeft();
+            delay(500);
+        }
         else if(rDist <= 20 || lDist <= 20)
+        {
         backward();
         delay(500);
+        }
     }
     else forward();
 }
