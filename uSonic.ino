@@ -139,7 +139,10 @@ void loop()
         {
         backward();
         delay(mDelay);
-        
+        }
+        else
+        {
+            forward();
         }
     }
     else 
