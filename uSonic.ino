@@ -2,7 +2,7 @@
 Servo myServo;
 int left= 180;
 int right = 15;
-int Mid = 90;
+int mid = 90;
 
 //ultrasonic init
 int echo = A4;
@@ -21,6 +21,8 @@ int bL = 8;
 
 //wheel speed?
 int SPD = 150;
+
+int mDelay = 400;
 
 void backward()
 {
@@ -73,7 +75,7 @@ int Distance()
     digitalWrite(trig, LOW);
     delayMicroseconds(2);
     digitalWrite(trig, HIGH);
-    delayMicroseconds(10);
+    delayMicroseconds(20);
     digitalWrite(trig, LOW);
     float cmDist = pulseIn(echo, HIGH);
     cmDist = cmDist/58;
@@ -82,6 +84,8 @@ int Distance()
 
 void setup()
 {
+    Serial.begin(9600);
+
     myServo.attach(3);
 
     pinMode(echo, INPUT);
@@ -100,35 +104,46 @@ void setup()
 
 void loop()
 {
-    myServo.write(Mid);
+    myServo.write(mid);
     delay(500);
     mDist = Distance(); 
-    
+    //#ifdef send
+    Serial.println(mDist);
+    //Serial.println(
     if(mDist <= 20)
     {
         stop();         
-        delay(500);
+        delay(mDelay);
         myServo.write(left);
-        delay(500);
+        delay(1000);
         lDist = Distance();
-        myServo.write(right);
         delay(500);
-        rDist = Distance ();
+
+        myServo.write(right);
+        delay(1000);
+        rDist = Distance();
+        delay(500);
+
         if(rDist > lDist)
         {
             mRight();
-            delay(500);
+            delay(mDelay);
         }
         else if(lDist > rDist)
         {
             mLeft();
-            delay(500);
+            delay(mDelay);
         }
-        else if(rDist <= 20 || lDist <= 20)
+        else if((rDist <= 20 || lDist <= 20))
         {
         backward();
-        delay(500);
+        delay(mDelay);
+        
         }
     }
-    else forward();
+    else 
+    {
+    forward();
+    delay(mDelay);
+    }
 }
