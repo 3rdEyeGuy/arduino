@@ -22,7 +22,8 @@ int bL = 8;
 //wheel speed?
 int SPD = 150;
 
-int mDelay = 400;
+int mDelay = 100;
+int dist = 30;
 
 void backward()
 {
@@ -75,7 +76,7 @@ int Distance()
     digitalWrite(trig, LOW);
     delayMicroseconds(2);
     digitalWrite(trig, HIGH);
-    delayMicroseconds(20);
+    delayMicroseconds(dist);
     digitalWrite(trig, LOW);
     float cmDist = pulseIn(echo, HIGH);
     cmDist = cmDist/58;
@@ -110,7 +111,7 @@ void loop()
     //#ifdef send
     Serial.println(mDist);
     //Serial.println(
-    if(mDist <= 20)
+    if(mDist <= dist)
     {
         stop();         
         delay(mDelay);
@@ -134,7 +135,7 @@ void loop()
             mLeft();
             delay(mDelay);
         }
-        else if((rDist <= 20 || lDist <= 20))
+        else if((rDist <= dist || lDist <= dist))
         {
         backward();
         delay(mDelay);
