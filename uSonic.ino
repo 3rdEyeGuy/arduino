@@ -22,7 +22,7 @@ int bL = 8;
 //wheel speed?
 int SPD = 150;
 
-int mDelay = 100;
+int mDelay = 150;
 int dist = 30;
 
 void backward()
@@ -102,11 +102,10 @@ void setup()
     stop();
 }
 
-
 void loop()
 {
     myServo.write(mid);
-    delay(500);
+    delay(200);
     mDist = Distance(); 
     //#ifdef send
     Serial.println(mDist);
@@ -148,6 +147,5 @@ void loop()
     else 
     {
     forward();
-    delay(mDelay);
     }
 }
