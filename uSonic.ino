@@ -25,7 +25,7 @@ int bL = 8;
 //wheel speed?
 int SPD = 150;
 
-int servoDelay = 500;
+int servoDelay = 100;
 int mDelay = 150;
 int dist = 30;
 
@@ -149,8 +149,10 @@ void panLRDiag()
 }
 void panFwd()
 {
-    while(!Distance())
+    mDist = Distance();
+    while(mDist > 30)
     {
+        Serial.println("No Obstacle");
         myServo.write(lDiag);
         delay(servoDelay);
         lDiagDist = Distance();
@@ -161,7 +163,7 @@ void panFwd()
 
         myServo.write(mid);
         delay(servoDelay);
-        //mDist = Distance();
+        mDist = Distance();
 
         panLRDiag();
     }
@@ -184,7 +186,7 @@ void loop()
         myServo.write(right);
         delay(servoDelay);
         rDist = Distance();
-        panLoop();
+        panLR();
     }
     else 
     {
