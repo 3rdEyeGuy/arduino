@@ -22,7 +22,7 @@ int spdL = 11;
 int fL = 9;
 int bL = 8;
 
-//wheel speed?
+//wheel speed
 int SPD = 500;
 
 int servoDelay = 250;
@@ -91,7 +91,6 @@ int Distance()
 void setup()
 {
     Serial.begin(9600);
-
     myServo.attach(3);
 
     pinMode(echo, INPUT);
@@ -113,44 +112,26 @@ void setup()
 
 void panLR()
 {
-    if(rDist > lDist)
-    {
+    if(rDist > lDist) {
         mLeft();
         delay(mDelay);
     }
-    else if(lDist > rDist)
-    {
+    else if(lDist > rDist) {
         mRight();
         delay(mDelay);
     }
-    /*
-    else if((rDist <= dist || lDist <= dist))
-    {
-        backward();
-        delay(mDelay);
-    }
-    
-    else
-    {
-        forward();
-    }
-    */
     stop();
-
 }
 
 void panLRDiag()
 {
-    if((rDiagDist <= dist) || (lDiagDist <= dist))
-    {
-        if(rDiagDist > lDiagDist)
-        {
+    if((rDiagDist <= dist) || (lDiagDist <= dist)) {
+        if(rDiagDist > lDiagDist) {
             mLeft();
             delay(mDiagDelay);
             stop();
         }
-        else if(lDiagDist > rDiagDist)
-        {
+        else if(lDiagDist > rDiagDist) {
             mRight();
             delay(mDiagDelay);
             stop();
@@ -206,13 +187,6 @@ void loop()
         Serial.print("mDist = ");
         Serial.println(mDist);
     }
-    //else  
-    //{
         forward();
         panFwd();
-    //}
 }
-/*
-wait for car to turn to pan servo again 
-No diag servo pan while car turns
-*/
