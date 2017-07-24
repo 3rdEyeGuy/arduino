@@ -25,7 +25,7 @@ int bL = 8;
 //wheel speed?
 int SPD = 150;
 
-int servoDelay = 100;
+int servoDelay = 250;
 int mDelay = 150;
 int dist = 30;
 
