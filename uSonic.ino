@@ -102,26 +102,9 @@ void setup()
     stop();
 }
 
-void loop()
+void panLoop()
 {
-    myServo.write(mid);
-    delay(200);
-    mDist = Distance(); 
-    //#ifdef send
-    Serial.println(mDist);
-    //Serial.println(
-    if(mDist <= dist)
-    {
-        stop();         
-        myServo.write(left);
-        delay(1000);
-        lDist = Distance();
-
-        myServo.write(right);
-        delay(1000);
-        rDist = Distance();
-
-        if(rDist > lDist)
+    if(rDist > lDist)
         {
             mRight();
             delay(mDelay);
@@ -140,6 +123,27 @@ void loop()
         {
             forward();
         }
+}
+
+void loop()
+{
+    myServo.write(mid);
+    delay(200);
+    mDist = Distance(); 
+    //#ifdef send
+    Serial.println(mDist);
+    //Serial.println(
+    if(mDist <= dist)
+    {
+        stop();         
+        myServo.write(left);
+        delay(1000);
+        lDist = Distance();
+
+        myServo.write(right);
+        delay(1000);
+        rDist = Distance();
+        panLoop();
     }
     else 
     {
