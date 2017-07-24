@@ -23,17 +23,17 @@ int fL = 9;
 int bL = 8;
 
 //wheel speed?
-int SPD = 150;
+int SPD = 25;
 
-int servoDelay = 250;
+int servoDelay = 500;
 int mDelay = 300;
 int mDiagDelay = 150;
 int dist = 30;
 
 void backward()
 {
-    digitalWrite(spdR, SPD);
-    digitalWrite(spdL, SPD); 
+    analogWrite(spdR, SPD);
+    analogWrite(spdL, SPD); 
     digitalWrite(fR,LOW);
     digitalWrite(bR,HIGH);
     digitalWrite(fL, LOW);
@@ -42,8 +42,8 @@ void backward()
 
 void forward()
 {
-    digitalWrite(spdR, SPD);
-    digitalWrite(spdL, SPD); 
+    analogWrite(spdR, SPD);
+    analogWrite(spdL, SPD); 
     digitalWrite(fR, HIGH);
     digitalWrite(bR, LOW);
     digitalWrite(fL, HIGH);
@@ -52,8 +52,8 @@ void forward()
 
 void mLeft()
 {
-    digitalWrite(spdL, SPD);
-    digitalWrite(spdR, SPD);
+    analogWrite(spdL, SPD);
+    analogWrite(spdR, SPD);
     digitalWrite(fL, HIGH);
     digitalWrite(bL, LOW);
     digitalWrite(fR, LOW);
@@ -62,8 +62,8 @@ void mLeft()
 
 void mRight()
 {
-    digitalWrite(spdR, SPD);
-    digitalWrite(spdL, SPD);
+    analogWrite(spdR, SPD);
+    analogWrite(spdL, SPD);
     digitalWrite(fR, HIGH);
     digitalWrite(bR, LOW);
     digitalWrite(fL, LOW);
@@ -136,57 +136,46 @@ void panLR()
 
 void panLRDiag()
 {
-    if((rDiagDist == 0) || (lDiagDist == 0))
+    if((rDiagDist <= dist || lDiagDist <= dist))
     {
-        forward();    
+        if(rDiagDist > lDiagDist)
+        {
+            mRight();
+            delay(mDelay);
+            stop();
+        }
+        else if(lDiagDist > rDiagDist)
+        {
+            mLeft();
+            delay(mDelay);
+            stop();
+        }
     }
-
-    if(rDiagDist > lDiagDist)
-    {
-        mRight();
-        delay(mDelay);
-        stop();
-    }
-    else if(lDiagDist > rDiagDist)
-    {
-        mLeft();
-        delay(mDelay);
-        stop();
-    }
-    else if((rDiagDist <= dist || lDiagDist <= dist))
-    {
-        backward();
-        delay(mDelay);
-        stop();
-    }
-
 }
+
 void panFwd()
 {
     mDist = Distance();
-    while(mDist > 30)
-    {
-        Serial.println("No Obstacle");
-        myServo.write(lDiag);
-        delay(servoDelay);
-        lDiagDist = Distance();
-        Serial.println("lDiagDist = ");
-        Serial.print(lDiagDist);
+    Serial.println("No Obstacle");
+    myServo.write(lDiag);
+    delay(servoDelay);
+    lDiagDist = Distance();
+    Serial.print("lDiagDist = ");
+    Serial.println(lDiagDist);
 
-        myServo.write(rDiag);
-        delay(servoDelay);
-        rDiagDist = Distance();
-        Serial.println("rDiagDist = ");
-        Serial.print(rDiagDist);
+    myServo.write(rDiag);
+    delay(servoDelay);
+    rDiagDist = Distance();
+    Serial.print("rDiagDist = ");
+    Serial.println(rDiagDist);
 
-        myServo.write(mid);
-        delay(servoDelay);
-        mDist = Distance();
-        Serial.println("mDist = ");
-        Serial.print(mDist);
+    myServo.write(mid);
+    delay(servoDelay);
+    mDist = Distance();
+    Serial.print("mDist = ");
+    Serial.println(mDist);
 
-        panLRDiag();
-    }
+    panLRDiag();
 }
 void loop()
 {
