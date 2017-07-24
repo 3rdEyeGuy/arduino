@@ -11,7 +11,7 @@ int rDiag = 37;
 int echo = A4;
 int trig = A5;
 
-int lDist = 0, rDist = 0, mDist = 0;
+int lDist = 0,lDiagDist = 0, rDist = 0,rDiagDist = 0, mDist = 0;
 
 //Right wheel variable init
 int spdR = 5;
