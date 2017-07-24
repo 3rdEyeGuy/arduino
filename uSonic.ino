@@ -113,16 +113,13 @@ void loop()
     if(mDist <= dist)
     {
         stop();         
-        delay(mDelay);
         myServo.write(left);
         delay(1000);
         lDist = Distance();
-        delay(500);
 
         myServo.write(right);
         delay(1000);
         rDist = Distance();
-        delay(500);
 
         if(rDist > lDist)
         {
