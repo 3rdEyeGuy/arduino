@@ -23,12 +23,13 @@ int fL = 9;
 int bL = 8;
 
 //wheel speed?
-int SPD = 25;
+int SPD = 500;
 
-int servoDelay = 500;
-int mDelay = 300;
-int mDiagDelay = 150;
-int dist = 30;
+int servoDelay = 250;
+int servoLRDelay = 300;
+int mDelay = 400;
+int mDiagDelay = 225;
+int dist = 60;
 
 void backward()
 {
@@ -111,21 +112,22 @@ void panLR()
 {
     if(rDist > lDist)
     {
-        mRight();
+        mLeft();
         delay(mDelay);
     }
     else if(lDist > rDist)
     {
-        mLeft();
+        mRight();
         delay(mDelay);
     }
+    /*
     else if((rDist <= dist || lDist <= dist))
     {
         backward();
         delay(mDelay);
     }
     
-    /*else
+    else
     {
         forward();
     }
@@ -136,18 +138,18 @@ void panLR()
 
 void panLRDiag()
 {
-    if((rDiagDist <= dist || lDiagDist <= dist))
+    if((rDiagDist <= dist) || (lDiagDist <= dist))
     {
         if(rDiagDist > lDiagDist)
         {
-            mRight();
-            delay(mDelay);
+            mLeft();
+            delay(mDiagDelay);
             stop();
         }
         else if(lDiagDist > rDiagDist)
         {
-            mLeft();
-            delay(mDelay);
+            mRight();
+            delay(mDiagDelay);
             stop();
         }
     }
@@ -185,25 +187,35 @@ void loop()
     //#ifdef send
     Serial.println(mDist);
     //Serial.println(
-    if(mDist <= dist)
+    while(mDist <= dist)
     {
         stop();         
         myServo.write(left);
-        delay(servoDelay);
+        delay(servoLRDelay);
         lDist = Distance();
+        Serial.print("lDist = ");
+        Serial.println(lDist);
 
         myServo.write(right);
-        delay(servoDelay);
+        delay(servoLRDelay);
         rDist = Distance();
+        Serial.print("rDist = ");
+        Serial.println(rDist);
         panLR();
+
+        myServo.write(mid);
+        delay(servoLRDelay);
+        mDist = Distance();
+        Serial.print("mDist = ");
+        Serial.println(mDist);
     }
-    else 
-    {
-    forward();
-    panFwd();
-    }
+    //else  
+    //{
+        forward();
+        panFwd();
+    //}
 }
 /*
+wait for car to turn to pan servo again 
 No diag servo pan while car turns
-account for no echo signal (gives 0 distance)
 */
