@@ -107,7 +107,8 @@ void steerLR()
     stop();
 }
 
-void panObst() {
+void panObst()
+{
     while(mDist <= dist)
     {
         stop();         
@@ -193,7 +194,8 @@ void setup()
     mDist = Distance(); 
 }
 
-void loop() {
+void loop() 
+{
     panObst();
     forward();
     panFwd();
