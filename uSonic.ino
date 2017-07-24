@@ -26,7 +26,6 @@ int bL = 8;
 int SPD = 500;
 
 int servoDelay = 250;
-int servoLRDelay = 300;
 int mDelay = 400;
 int mDiagDelay = 225;
 int dist = 60;
@@ -106,6 +105,10 @@ void setup()
     pinMode(fL,OUTPUT);
     pinMode(bL,OUTPUT);
     stop();
+
+    myServo.write(mid);
+    delay(servoDelay);
+    mDist = Distance(); 
 }
 
 void panLR()
@@ -157,8 +160,8 @@ void panLRDiag()
 
 void panFwd()
 {
-    mDist = Distance();
     Serial.println("No Obstacle");
+
     myServo.write(lDiag);
     delay(servoDelay);
     lDiagDist = Distance();
@@ -181,30 +184,24 @@ void panFwd()
 }
 void loop()
 {
-    myServo.write(mid);
-    delay(servoDelay);
-    mDist = Distance(); 
-    //#ifdef send
-    Serial.println(mDist);
-    //Serial.println(
     while(mDist <= dist)
     {
         stop();         
         myServo.write(left);
-        delay(servoLRDelay);
+        delay(servoDelay);
         lDist = Distance();
         Serial.print("lDist = ");
         Serial.println(lDist);
 
         myServo.write(right);
-        delay(servoLRDelay);
+        delay(servoDelay);
         rDist = Distance();
         Serial.print("rDist = ");
         Serial.println(rDist);
         panLR();
 
         myServo.write(mid);
-        delay(servoLRDelay);
+        delay(servoDelay);
         mDist = Distance();
         Serial.print("mDist = ");
         Serial.println(mDist);
