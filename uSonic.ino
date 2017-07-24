@@ -4,6 +4,9 @@ int left= 180;
 int right = 15;
 int mid = 90;
 
+int lDiag = 135;
+int rDiag = 37;
+
 //ultrasonic init
 int echo = A4;
 int trig = A5;
@@ -22,6 +25,7 @@ int bL = 8;
 //wheel speed?
 int SPD = 150;
 
+int servoDelay = 500;
 int mDelay = 150;
 int dist = 30;
 
@@ -102,7 +106,7 @@ void setup()
     stop();
 }
 
-void panLoop()
+void panLR()
 {
     if(rDist > lDist)
         {
@@ -125,10 +129,47 @@ void panLoop()
         }
 }
 
+void panLRDiag()
+{
+    if(rDiagDist > lDiagDist)
+    {
+        mRight();
+        delay(mDelay);
+    }
+    else if(lDiagDist > rDiagDist)
+    {
+        mLeft();
+        delay(mDelay);
+    }
+    else if((rDiagDist <= dist || lDiagDist <= dist))
+    {
+        backward();
+        delay(mDelay);
+    }
+}
+void panFwd()
+{
+    while(!Distance())
+    {
+        myServo.write(lDiag);
+        delay(servoDelay);
+        lDiagDist = Distance();
+
+        myServo.write(rDiag);
+        delay(servoDelay);
+        rDiagDist = Distance();
+
+        myServo.write(mid);
+        delay(servoDelay);
+        //mDist = Distance();
+
+        panLRDiag();
+    }
+}
 void loop()
 {
     myServo.write(mid);
-    delay(200);
+    delay(servoDelay);
     mDist = Distance(); 
     //#ifdef send
     Serial.println(mDist);
@@ -137,16 +178,17 @@ void loop()
     {
         stop();         
         myServo.write(left);
-        delay(1000);
+        delay(servoDelay);
         lDist = Distance();
 
         myServo.write(right);
-        delay(1000);
+        delay(servoDelay);
         rDist = Distance();
         panLoop();
     }
     else 
     {
     forward();
+    panFwd();
     }
 }
