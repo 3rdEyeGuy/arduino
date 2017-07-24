@@ -26,8 +26,8 @@ int bL = 8;
 int SPD = 150;
 
 int servoDelay = 250;
-int mDelay = 150;
-int mDiagDelay = 150;
+int mDelay = 600;
+int mDiagDelay = 300;
 int dist = 30;
 
 void backward()
@@ -110,10 +110,10 @@ void setup()
 void panLR()
 {
     if(rDist > lDist)
-        {
-            mRight();
-            delay(mDelay);
-        }
+    {
+        mRight();
+        delay(mDelay);
+    }
     else if(lDist > rDist)
     {
         mLeft();
@@ -121,13 +121,15 @@ void panLR()
     }
     else if((rDist <= dist || lDist <= dist))
     {
-    backward();
-    delay(mDelay);
+        backward();
+        delay(mDelay);
     }
-    else
+    /*else
     {
         forward();
     }
+    */
+    stop();
 }
 
 void panLRDiag()
@@ -198,3 +200,4 @@ void loop()
 }
 /*
 No diag servo pan while car turns
+*/
