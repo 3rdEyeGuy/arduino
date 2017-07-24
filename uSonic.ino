@@ -136,7 +136,7 @@ void panLR()
 
 void panLRDiag()
 {
-    if((rDiagDist == 0 || lDiagDist == 0))
+    if((rDiagDist == 0) || (lDiagDist == 0))
     {
         forward();    
     }
@@ -170,14 +170,20 @@ void panFwd()
         myServo.write(lDiag);
         delay(servoDelay);
         lDiagDist = Distance();
+        Serial.println("lDiagDist = ");
+        Serial.print(lDiagDist);
 
         myServo.write(rDiag);
         delay(servoDelay);
         rDiagDist = Distance();
+        Serial.println("rDiagDist = ");
+        Serial.print(rDiagDist);
 
         myServo.write(mid);
         delay(servoDelay);
         mDist = Distance();
+        Serial.println("mDist = ");
+        Serial.print(mDist);
 
         panLRDiag();
     }
