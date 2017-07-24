@@ -94,29 +94,7 @@ int Distance()
     return (int)cmDist;
 }
 
-void setup()
-{
-    Serial.begin(9600);
-    myServo.attach(3);
-
-    pinMode(echo, INPUT);
-    pinMode(trig, OUTPUT);
-
-    pinMode(spdR,OUTPUT);
-    pinMode(fR,OUTPUT);
-    pinMode(bR,OUTPUT);
-
-    pinMode(spdL, OUTPUT);
-    pinMode(fL,OUTPUT);
-    pinMode(bL,OUTPUT);
-    stop();
-
-    myServo.write(mid);
-    delay(servoDelay);
-    mDist = Distance(); 
-}
-
-void panLR()
+void steerLR()
 {
     if(rDist > lDist) {
         mLeft();
@@ -129,7 +107,31 @@ void panLR()
     stop();
 }
 
-void panLRDiag()
+void panObst() {
+    while(mDist <= dist)
+    {
+        stop();         
+        myServo.write(left);
+        delay(servoDelay);
+        lDist = Distance();
+        Serial.print("lDist = ");
+        Serial.println(lDist);
+
+        myServo.write(right);
+        delay(servoDelay);
+        rDist = Distance();
+        Serial.print("rDist = ");
+        Serial.println(rDist);
+        steerLR();
+
+        myServo.write(mid);
+        delay(servoDelay);
+        mDist = Distance();
+        Serial.print("mDist = ");
+        Serial.println(mDist);
+    }
+}
+void steerDiag()
 {
     if((rDiagDist <= dist) || (lDiagDist <= dist)) {
         if(rDiagDist > lDiagDist) {
@@ -167,32 +169,32 @@ void panFwd()
     Serial.print("mDist = ");
     Serial.println(mDist);
 
-    panLRDiag();
+    steerDiag();
 }
-void loop()
+
+void setup()
 {
-    while(mDist <= dist)
-    {
-        stop();         
-        myServo.write(left);
-        delay(servoDelay);
-        lDist = Distance();
-        Serial.print("lDist = ");
-        Serial.println(lDist);
+    stop();
+    Serial.begin(9600);
+    myServo.attach(3);
 
-        myServo.write(right);
-        delay(servoDelay);
-        rDist = Distance();
-        Serial.print("rDist = ");
-        Serial.println(rDist);
-        panLR();
+    pinMode(echo, INPUT);
+    pinMode(trig, OUTPUT);
 
-        myServo.write(mid);
-        delay(servoDelay);
-        mDist = Distance();
-        Serial.print("mDist = ");
-        Serial.println(mDist);
-    }
-        forward();
-        panFwd();
+    pinMode(spdR,OUTPUT);
+    pinMode(fR,OUTPUT);
+    pinMode(bR,OUTPUT);
+    pinMode(spdL, OUTPUT);
+    pinMode(fL,OUTPUT);
+    pinMode(bL,OUTPUT);
+    
+    myServo.write(mid);
+    delay(servoDelay);
+    mDist = Distance(); 
+}
+
+void loop() {
+    panObst();
+    forward();
+    panFwd();
 }
