@@ -109,12 +109,12 @@ void setup()
 
 void panLR()
 {
-    if((rDist > lDist) || (rDist == 0))
+    if(rDist > lDist)
     {
         mRight();
         delay(mDelay);
     }
-    else if((lDist > rDist) || (lDist == 0))
+    else if(lDist > rDist)
     {
         mLeft();
         delay(mDelay);
@@ -124,32 +124,42 @@ void panLR()
         backward();
         delay(mDelay);
     }
+    
     /*else
     {
         forward();
     }
     */
     stop();
+
 }
 
 void panLRDiag()
 {
-    if((rDiagDist > lDiagDist) || (rDiagDist == 0))
+    if((rDiagDist == 0 || lDiagDist == 0))
+    {
+        forward();    
+    }
+
+    if(rDiagDist > lDiagDist)
     {
         mRight();
         delay(mDelay);
+        stop();
     }
-    else if((lDiagDist > rDiagDist) || (lDiagDist == 0))
+    else if(lDiagDist > rDiagDist)
     {
         mLeft();
         delay(mDelay);
+        stop();
     }
     else if((rDiagDist <= dist || lDiagDist <= dist))
     {
         backward();
         delay(mDelay);
+        stop();
     }
-    stop();
+
 }
 void panFwd()
 {
